@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>Study Assistant</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+            background: #f3f6fb;
+            color: #1f2937;
+        }
+
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .navbar-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 14px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .brand {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #4b5563;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 999px;
+            transition: 0.2s;
+        }
+
+        .nav-links a:hover {
+            background: #eef4ff;
+            color: #1d4ed8;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 28px 20px 60px;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #ffffff, #eef4ff);
+            border: 1px solid #dbeafe;
+            border-radius: 24px;
+            padding: 32px;
+            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.08);
+            margin-bottom: 24px;
+        }
+
+        .hero h1 {
+            margin: 0 0 12px;
+            font-size: 40px;
+            color: #111827;
+        }
+
+        .hero p {
+            margin: 0;
+            color: #4b5563;
+            line-height: 1.8;
+            max-width: 900px;
+        }
+
+        .hero-tags {
+            margin-top: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 8px 12px;
+            border-radius: 999px;
+            background: #ffffff;
+            border: 1px solid #dbeafe;
+            color: #1d4ed8;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .section-title {
+            margin: 28px 0 14px;
+            font-size: 24px;
+            color: #111827;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 22px;
+            box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+            border: 1px solid #e5e7eb;
+        }
+
+        .card.full {
+            grid-column: 1 / -1;
+        }
+
+        .card h2 {
+            margin: 0 0 12px;
+            font-size: 22px;
+            color: #111827;
+        }
+
+        .subtext {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 14px;
+            line-height: 1.7;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea {
+            width: 100%;
+            padding: 12px 14px;
+            border-radius: 12px;
+            border: 1px solid #d1d5db;
+            font-size: 15px;
+            background: #fff;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        textarea {
+            min-height: 130px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.12);
+        }
+
+        .row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .btn {
+            margin-top: 14px;
+            padding: 12px 18px;
+            border: none;
+            border-radius: 12px;
+            background: #2563eb;
+            color: #fff;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-1px);
+        }
+
+        .btn.secondary {
+            background: #059669;
+        }
+
+        .btn.secondary:hover {
+            background: #047857;
+        }
+
+        .btn.warning {
+            background: #ea580c;
+        }
+
+        .btn.warning:hover {
+            background: #c2410c;
+        }
+
+        .result-box {
+            margin-top: 16px;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+            padding: 16px;
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+
+        .rag-panel {
+            margin-top: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .bubble {
+            padding: 16px 18px;
+            border-radius: 18px;
+            max-width: 100%;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            border: 1px solid #e5e7eb;
+        }
+
+        .bubble.user {
+            background: #e8f0ff;
+            border-color: #c7dbff;
+            align-self: flex-start;
+        }
+
+        .bubble.assistant {
+            background: #f9fafb;
+            align-self: stretch;
+        }
+
+        .bubble-label {
+            display: inline-block;
+            margin-bottom: 8px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #6b7280;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .list {
+            margin: 14px 0 0;
+            padding: 0;
+            list-style: none;
+        }
+
+        .list li {
+            padding: 12px 14px;
+            border-radius: 12px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 999px;
+            background: #e0ecff;
+            color: #1d4ed8;
+            font-size: 12px;
+            margin-right: 6px;
+            margin-top: 6px;
+        }
+
+        .stats {
+            margin-top: 12px;
+            padding: 14px;
+            border-radius: 14px;
+            background: #f9fafb;
+            border: 1px solid #e5e7eb;
+        }
+
+        .stats h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .problem-detail p {
+            margin: 8px 0;
+            line-height: 1.7;
+        }
+
+        .muted {
+            color: #6b7280;
+        }
+
+        .empty {
+            color: #9ca3af;
+            font-size: 14px;
+        }
+
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .grid,
+            .row {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="navbar-inner">
+            <div class="brand">Study Assistant</div>
+            <div class="nav-links">
+                <a href="#rag">RAG 问答</a>
+                <a href="#problem">题目查询</a>
+                <a href="#recommend">分类推荐</a>
+                <a href="#wrong">错题管理</a>
+                <a href="#index">索引管理</a>
+                <a href="/docs" target="_blank">API Docs</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>本地算法学习助手</h1>
+            <p>
+                这是一个基于本地大语言模型、向量检索和 RAG 流程构建的算法学习助手。
+                当前页面集成了题意分析、题目查询、分类推荐、错题管理和索引构建等功能，
+                可以作为完整的本地 AI 学习工具 demo 使用。
+            </p>
+            <div class="hero-tags">
+                <span class="tag">Python 3.10</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">LangChain</span>
+                <span class="tag">FAISS</span>
+                <span class="tag">Ollama</span>
+                <span class="tag">Local RAG</span>
+            </div>
+        </div>
+
+        <h2 class="section-title">核心功能</h2>
+
+        <div class="grid">
+            <div class="card full" id="rag">
+                <h2>RAG 问答</h2>
+                <div class="subtext">
+                    输入题意描述，系统会先进行语义检索，再结合候选题目和本地模型生成最接近题目、知识点判断、原因分析与建议练习。
+                </div>
+
+                <form method="post" action="/page/ask#rag">
+                    <label for="query">题意描述</label>
+                    <textarea id="query" name="query" placeholder="例如：给定数组，找三个数之和等于0">{{ ask_query }}</textarea>
+
+                    <div class="row">
+                        <div>
+                            <label for="top_k">检索数量 top_k</label>
+                            <input id="top_k" name="top_k" type="number" value="3" min="1" max="10">
+                        </div>
+                        <div>
+                            <label for="model_name">模型名称</label>
+                            <input id="model_name" name="model_name" type="text" value="llama3">
+                        </div>
+                    </div>
+
+                    <button class="btn" type="submit">开始分析</button>
+                </form>
+
+                {% if ask_result %}
+                <div class="rag-panel">
+                    <div class="bubble user">
+                        <div class="bubble-label">用户输入</div>
+                        {{ ask_query }}
+                    </div>
+                    <div class="bubble assistant">
+                        <div class="bubble-label">系统分析结果</div>
+                        {{ ask_result }}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card" id="problem">
+                <h2>题目详情查询</h2>
+                <div class="subtext">
+                    按题号查看题目标题、难度、类别、描述、核心思路与代码。
+                </div>
+                <form method="post" action="/page/problem#problem">
+                    <label for="problem_id">题号</label>
+                    <input id="problem_id" name="problem_id" type="number" placeholder="例如 1" value="{{ problem_id }}">
+                    <button class="btn" type="submit">查询题目</button>
+                </form>
+
+                {% if problem_result %}
+                <div class="result-box problem-detail">
+                    <p><strong>题号：</strong>{{ problem_result.id }}</p>
+                    <p><strong>题目：</strong>{{ problem_result.title }}</p>
+                    <p><strong>难度：</strong>{{ problem_result.difficulty }}</p>
+                    <p><strong>类别：</strong>{{ problem_result.categories | join(', ') }}</p>
+                    <p><strong>题目描述：</strong>{{ problem_result.description }}</p>
+                    <p><strong>核心思路：</strong>{{ problem_result.idea }}</p>
+                    <p><strong>代码：</strong></p>
+                    <div class="result-box">{{ problem_result.code }}</div>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card" id="recommend">
+                <h2>分类推荐</h2>
+                <div class="subtext">
+                    按类别和难度筛选题目，用于定向练习。
+                </div>
+                <form method="post" action="/page/recommend#recommend">
+                    <label for="category">类别</label>
+                    <input id="category" name="category" type="text" placeholder="例如 双指针" value="{{ recommend_category }}">
+
+                    <div class="row">
+                        <div>
+                            <label for="difficulty">难度（可选）</label>
+                            <input id="difficulty" name="difficulty" type="text" placeholder="例如 easy / medium" value="{{ recommend_difficulty }}">
+                        </div>
+                        <div>
+                            <label for="num">数量</label>
+                            <input id="num" name="num" type="number" min="1" max="20" value="{{ recommend_num }}">
+                        </div>
+                    </div>
+
+                    <button class="btn" type="submit">获取推荐</button>
+                </form>
+
+                {% if recommend_results is not none %}
+                    {% if recommend_results %}
+                    <ul class="list">
+                        {% for item in recommend_results %}
+                        <li>
+                            <strong>{{ item.id }}. {{ item.title }}</strong><br>
+                            <span class="badge">{{ item.difficulty }}</span>
+                            <span class="muted">类别：{{ item.categories | join(', ') }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="result-box">没有找到符合条件的题目。</div>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <div class="card" id="wrong">
+                <h2>添加错题</h2>
+                <div class="subtext">
+                    输入题号，将题目加入错题本，便于后续复习。
+                </div>
+                <form method="post" action="/page/wrong/add#wrong">
+                    <label for="wrong_problem_id">题号</label>
+                    <input id="wrong_problem_id" name="problem_id" type="number" placeholder="例如 15" value="{{ wrong_id }}">
+                    <button class="btn secondary" type="submit">加入错题本</button>
+                </form>
+
+                {% if add_wrong_result %}
+                <div class="result-box">
+                    已加入错题本：
+                    {{ add_wrong_result.id }}. {{ add_wrong_result.title }}
+                    [{{ add_wrong_result.difficulty }}]
+                    错误次数：{{ add_wrong_result.wrong_count }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h2>错题列表</h2>
+                <div class="subtext">
+                    当前错题本中保存的题目。
+                </div>
+                {% if wrong_list %}
+                <ul class="list">
+                    {% for item in wrong_list %}
+                    <li>
+                        <strong>{{ item.id }}. {{ item.title }}</strong><br>
+                        <span class="badge">{{ item.difficulty }}</span>
+                        <span class="muted">类别：{{ item.categories | join(', ') }}</span><br>
+                        <span class="muted">错误次数：{{ item.wrong_count }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty">当前错题本为空。</div>
+                {% endif %}
+            </div>
+
+            <div class="card">
+                <h2>错题统计</h2>
+                <div class="subtext">
+                    展示累计错误次数与类别分布。
+                </div>
+                <div class="stats">
+                    <h3>总错误次数：{{ wrong_stats.total_wrong }}</h3>
+                    {% if wrong_stats.category_count %}
+                    <ul class="list">
+                        {% for category, count in wrong_stats.category_count %}
+                        <li>{{ category }}：{{ count }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                    <div class="empty">暂无类别统计。</div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="card full" id="index">
+                <h2>索引管理</h2>
+                <div class="subtext">
+                    当题库数据变更后，可以手动重新构建 FAISS 向量索引。
+                </div>
+                <form method="post" action="/page/build_index#index">
+                    <button class="btn warning" type="submit">构建索引</button>
+                </form>
+
+                {% if build_index_result %}
+                <div class="result-box">{{ build_index_result }}</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="footer">
+            Study Assistant Demo · Local RAG / FastAPI / FAISS / Ollama
+        </div>
+    </div>
+</body>
+</html>

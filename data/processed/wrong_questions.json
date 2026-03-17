@@ -7,5 +7,23 @@
       "双指针"
     ],
     "wrong_count": 2
+  },
+  {
+    "id": 3,
+    "title": "无重复字符的最长子串",
+    "difficulty": "medium",
+    "categories": [
+      "滑动窗口"
+    ],
+    "wrong_count": 1
+  },
+  {
+    "id": 1,
+    "title": "两数之和",
+    "difficulty": "easy",
+    "categories": [
+      "哈希"
+    ],
+    "wrong_count": 1
   }
 ]
