@@ -20,11 +20,14 @@ app = FastAPI(title="Study Assistant API")
 templates = Jinja2Templates(directory="web/templates")
 
 def load_page_options():
-    problems_path = Path("/Users/ky/PycharmProjects/Study_assistant/data/processed/problems.json")
-    categories_path = Path("/Users/ky/PycharmProjects/Study_assistant/data/processed/categories.json")
+    problems_path = Path("data/processed/problems.json")
+    categories_path = Path("data/processed/categories.json")
 
     problems = []
     categories = []
+
+    print("problems_path:", problems_path.resolve(), problems_path.exists())
+    print("categories_path:", categories_path.resolve(), categories_path.exists())
 
     if problems_path.exists():
         with open(problems_path, "r", encoding="utf-8") as f:
@@ -35,9 +38,11 @@ def load_page_options():
             category_data = json.load(f)
             categories = list(category_data.keys())
 
-    # 题目按 id 排序，显示更整齐
     problems = sorted(problems, key=lambda x: x.get("id", 0))
     categories = sorted(categories)
+
+    print("problems count:", len(problems))
+    print("categories count:", len(categories))
 
     return problems, categories
 
@@ -67,6 +72,7 @@ def build_page_context(request: Request, **kwargs):
         "wrong_list": get_wrong_book_list(),
         "wrong_stats": get_wrong_book_stats(),
 
+        "build_index_result": None,
     }
 
     context.update(kwargs)
@@ -117,6 +123,7 @@ def page_ask(
             ask_query=query,
         )
     )
+
 
 # ----------------------------
 # 网页：题目详情查询
@@ -224,3 +231,4 @@ def wrong_stats():
 @app.post("/build_index")
 def build_index():
     return build_faiss_index()
+
